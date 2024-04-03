@@ -37,10 +37,10 @@ local function IsNearWater()
 
     if not isInAllowedZone then
         TriggerEvent("vorp:TipBottom", _U('noWater'), 4000)
-        return false
+        return 
     end
 
-    return true
+    return isInAllowedZone 
 end
 
 
