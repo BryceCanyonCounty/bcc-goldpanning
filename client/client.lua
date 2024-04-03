@@ -14,20 +14,22 @@ local useWaterBucketPrompt = promptGroup:RegisterPrompt(_U('promptWaterBucket'),
 local useGoldPanPrompt = promptGroup:RegisterPrompt(_U('promptPan'), Config.keys.G, 1, 1, true, 'hold', { timedeventhash = "MEDIUM_TIMED_EVENT" })
 local removeTablePrompt = promptGroup:RegisterPrompt(_U('promptPickUp'), Config.keys.F, 1, 1, true, 'hold', { timedeventhash = "MEDIUM_TIMED_EVENT" })
 
-
-
+----------- prop
+local function RemoveTable() -- Initiates check to remove the spawned prop
+    TriggerServerEvent('bcc-goldpanning:checkCanCarry', Config.goldwashProp)
+end
 -----------------------------------Mud Bucket-----------------------------------
 
-function IsNearWater()
+local function IsNearWater()
     local playerPed = PlayerPedId()
     local coords = GetEntityCoords(playerPed, true)
     local waterHash = Citizen.InvokeNative(0x5BA7A68A346A5A91, coords.x, coords.y, coords.z) -- GetWaterMapZoneAtCoords
     local pos = GetEntityCoords(PlayerPedId(), true)
 
-
     local isInAllowedZone = false
-    for _, waterZone in ipairs(Config.waterTypes) do
-        if waterHash == GetHashKey(waterZone.hash) and IsPedOnFoot(playerPed) and IsEntityInWater(playerPed) then
+    for i = 1, #Config.waterTypes do
+        local waterZone = Config.waterTypes[i]
+        if waterHash == joaat(waterZone.hash) and IsPedOnFoot(playerPed) and IsEntityInWater(playerPed) then
             isInAllowedZone = true
             break
         end
@@ -35,10 +37,12 @@ function IsNearWater()
 
     if not isInAllowedZone then
         TriggerEvent("vorp:TipBottom", _U('noWater'), 4000)
-        return
+        return false
     end
-    return isInAllowedZone
+
+    return true
 end
+
 
 local activePrompts = {
     mudBucket = false,
@@ -47,7 +51,7 @@ local activePrompts = {
     removeTable = true,
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(5)
 
@@ -216,13 +220,11 @@ end)
 
 -----------------------------------PROP STUFF-----------------------------------
 
-function RemoveTable() -- Initiates check to remove the spawned prop
-    TriggerServerEvent('bcc-goldpanning:checkCanCarry', Config.goldwashProp)
-end
 
 
 
-function SetupBuildPrompt() -- Sets up the prompt for building the prop
+
+local function SetupBuildPrompt() -- Sets up the prompt for building the prop
     local str = _U('BuildPrompt')
     BuildPrompt = Citizen.InvokeNative(0x04F97DE45A519419)
     PromptSetControlAction(BuildPrompt, Config.keys.R)
@@ -234,7 +236,7 @@ function SetupBuildPrompt() -- Sets up the prompt for building the prop
     PromptRegisterEnd(BuildPrompt)
 end
 
-function SetupDelPrompt() -- Sets up the prompt for deleting the prop when being placed
+local function SetupDelPrompt() -- Sets up the prompt for deleting the prop when being placed
     local str = _U('DelPrompt')
     DelPrompt = Citizen.InvokeNative(0x04F97DE45A519419)
     PromptSetControlAction(DelPrompt, Config.keys.E)
