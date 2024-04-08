@@ -35,13 +35,14 @@
  
 ## SQL
 ### If you want to use my items
-
+```sql
 INSERT IGNORE INTO items (`item`, `label`, `limit`, `can_remove`, `type`, `usable`) VALUES 
                          ('p_goldcradlestand01x', 'Gold Wash Table', 1, 1, 'item_standard', 1),
                          ('mud_bucket', 'Bucket of Mud', 20, 1, 'item_standard', 1),
                          ('empty_mud_bucket', 'Empty mud bucket', 20, 1, 'item_standard', 1),
                          ('wateringcan', 'Watering Can', 20, 1, 'item_standard', 1),
                          ('wateringcan_empty', 'empty watering can', 20, 1, 'item_standard', 1),
+```
 
 
 ## Credits
