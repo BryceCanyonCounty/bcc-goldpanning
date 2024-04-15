@@ -1,3 +1,5 @@
+VORPcore = exports.vorp_core:GetCore()
+
 local goldPanUse = {}
 
 -------------------------------------Register Usable Items-------------------------------------
@@ -30,15 +32,15 @@ AddEventHandler('bcc-goldpanning:mudBuckets', function()
         if Config.debug then
             print("player " .. _source .. " has used a empty mud bucket")
         end
-        TriggerClientEvent("vorp:TipRight", _source, _U('usedEmptyMudBucket'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('usedEmptyMudBucket'), 3000)
 
         exports.vorp_inventory:addItem(_source, Config.mudBucket, 1)
         if Config.debug then
             print("player " .. _source .. " has received a mud bucket")
         end
-        TriggerClientEvent("vorp:TipRight", _source, _U('receivedEmptyMudBucket'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('receivedEmptyMudBucket'), 3000)
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cannotCarryMoreMudBuckets'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cannotCarryMoreMudBuckets'), 3000)
     end
 end)
 
@@ -50,15 +52,15 @@ AddEventHandler('bcc-goldpanning:waterBuckets', function()
         if Config.debug then
             print("player " .. _source .. " has used a empty water bucket")
         end
-        TriggerClientEvent("vorp:TipRight", _source, _U('receivedEmptyWaterBucket'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('receivedEmptyWaterBucket'), 3000)
 
         exports.vorp_inventory:addItem(_source, Config.waterBucket, 1)
         if Config.debug then
             print("player " .. _source .. " has received a water bucket")
         end
-        TriggerClientEvent("vorp:TipRight", _source, _U('receivedEmptyWaterBucket'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('receivedEmptyWaterBucket'), 3000)
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cantCarryMoreEmptyWaterCans'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cantCarryMoreEmptyWaterCans'), 3000)
     end
 end)
 
@@ -71,16 +73,16 @@ AddEventHandler('bcc-goldpanning:useMudBucket', function()
     if exports.vorp_inventory:canCarryItem(_source, Config.emptyMudBucket, 1, nil) then   --Check if player can carry the empty mud bucket rest of the code is self explanatory
         if itemCount > 0 then
             exports.vorp_inventory:subItem(_source, Config.mudBucket, 1)
-            TriggerClientEvent("vorp:TipRight", _source, _U('usedMudBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('usedMudBucket'), 3000)
             exports.vorp_inventory:addItem(_source, Config.emptyMudBucket, 1)
-            TriggerClientEvent("vorp:TipRight", _source, _U('receivedEmptyMudBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('receivedEmptyMudBucket'), 3000)
             TriggerClientEvent('bcc-goldpanning:mudBucketUsedSuccess', _source)
         else
-            TriggerClientEvent("vorp:TipRight", _source, _U('dontHaveMudBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('dontHaveMudBucket'), 3000)
             TriggerClientEvent("bcc-goldpanning:mudBucketUsedfailure", _source)
         end
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cannotCarryMoreMudBuckets'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cannotCarryMoreMudBuckets'), 3000)
     end
 end)
 
@@ -91,16 +93,16 @@ AddEventHandler('bcc-goldpanning:useWaterBucket', function()
     if exports.vorp_inventory:canCarryItem(_source, Config.emptyWaterBucket, 1, nil) then
         if itemCount > 0 then
             exports.vorp_inventory:subItem(_source, Config.waterBucket, 1)
-            TriggerClientEvent("vorp:TipRight", _source, _U('usedWaterBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('usedWaterBucket'), 3000)
             exports.vorp_inventory:addItem(_source, Config.emptyWaterBucket, 1)
-            TriggerClientEvent("vorp:TipRight", _source, _U('receivedEmptyWaterBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('receivedEmptyWaterBucket'), 3000)
             TriggerClientEvent('bcc-goldpanning:waterUsedSuccess', _source)
         else
-            TriggerClientEvent("vorp:TipRight", _source, _U('dontHaveWaterBucket'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('dontHaveWaterBucket'), 3000)
             TriggerClientEvent("bcc-goldpanning:waterUsedfailure", _source)
         end
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cantCarryMoreEmptyWaterCans'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cantCarryMoreEmptyWaterCans'), 3000)
     end
 end)
 
@@ -117,11 +119,11 @@ AddEventHandler('bcc-goldpanning:usegoldPan', function()
                 goldPanUse[_source] = nil
             end)
         else
-            TriggerClientEvent("vorp:TipRight", _source, _U('noPan'), 3000)
+            VORPcore.NotifyRightTip(_source, _U('noPan'), 3000)
             TriggerClientEvent("bcc-goldpanning:goldPanfailure", _source)
         end
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cantCarryMoreEmptyWaterCans'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cantCarryMoreEmptyWaterCans'), 3000)
     end
 end)
 
@@ -136,17 +138,17 @@ AddEventHandler('bcc-goldpanning:panSuccess', function()
     local _source = source
     if exports.vorp_inventory:canCarryItem(_source, Config.goldWashReward, Config.goldWashRewardAmount) and goldPanUse[_source] then
         exports.vorp_inventory:addItem(_source, Config.goldWashReward, Config.goldWashRewardAmount)
-        TriggerClientEvent("vorp:TipRight", _source, _U('receivedGoldFlakes'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('receivedGoldFlakes'), 3000)
         if Config.debug then
             print("player " .. _source .. " has received " .. Config.goldWashRewardAmount .. " gold flakes")
         end
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('cantCarryMoreGoldFlakes'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('cantCarryMoreGoldFlakes'), 3000)
     end
 
     if math.random(100) <= Config.extraRewardChance and goldPanUse[_source] then
         exports.vorp_inventory:addItem(_source, Config.extraReward, Config.extraRewardAmount)
-        TriggerClientEvent("vorp:TipRight", _source, _U('receivedExtraReward'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('receivedExtraReward'), 3000)
         if Config.debug then
             print("player " .. _source .. " has received " .. Config.extraRewardAmount .. " extra reward")
         end
@@ -165,9 +167,9 @@ AddEventHandler('bcc-goldpanning:givePropBack', function()
     local _source = source
     if exports.vorp_inventory:canCarryItem(_source, Config.goldwashProp, 1, nil) then
         exports.vorp_inventory:addItem(_source, Config.goldwashProp, 1)
-        TriggerClientEvent("vorp:TipRight", _source, _U('propPickup'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('propPickup'), 3000)
     else
-        TriggerClientEvent("vorp:TipRight", _source, _U('propFull'), 3000)
+        VORPcore.NotifyRightTip(_source, _U('propFull'), 3000)
     end
 end)
 

@@ -1,6 +1,8 @@
+VORPcore = exports.vorp_core:GetCore() -- NEW includes  new callback system
 BccUtils = exports['bcc-utils'].initiate()
 Progressbar = exports["feather-progressbar"]:initiate()
 local MiniGame = exports['bcc-minigames'].initiate()
+
 
 
 local placing = false
@@ -34,7 +36,7 @@ function IsNearWater()
     end
 
     if not isInAllowedZone then
-        TriggerEvent("vorp:TipBottom", _U('noWater'), 4000)
+        VORPcore.NotifyObjective(_U('noWater'),4000)
         return
     end
     return isInAllowedZone
@@ -207,7 +209,7 @@ AddEventHandler('bcc-goldpanning:canCarryResponse', function(canCarry)
             TriggerServerEvent('bcc-goldpanning:givePropBack')
         end
     else
-        TriggerEvent("vorp:TipBottom", _U('propFull'), 4000)
+        VORPcore.NotifyObjective(_U('propFull'), 4000)
     end
 end)
 
@@ -265,7 +267,7 @@ AddEventHandler('bcc-goldpanning:placeProp', function(propName)
     end
 
     if not isInAllowedZone then
-        TriggerEvent("vorp:TipBottom", _U('noWater'), 4000)
+        VORPcore.NotifyObjective(_U('noWater'), 4000)
         TriggerServerEvent('bcc-goldpanning:givePropBack')
         return
     end
