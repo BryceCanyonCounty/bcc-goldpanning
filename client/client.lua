@@ -109,46 +109,7 @@ CreateThread(function()
                     ResetActivePrompts()
                 end
             end
-        end
-        --[[if prop ~= 0 and not placing then
-            local propCoords = GetEntityCoords(prop)
-            local distance = GetDistanceBetweenCoords(playerCoords, propCoords, true)
-
-            if distance < 2.0 then
-                promptGroup:ShowGroup("Gold Panning")
-
-                -- Only toggle prompts based on their active state
-                useMudBucketPrompt:TogglePrompt(activePrompts.mudBucket and stage == "mudBucket")
-                useWaterBucketPrompt:TogglePrompt(activePrompts.waterBucket and stage == "waterBucket")
-                useGoldPanPrompt:TogglePrompt(activePrompts.goldPan and stage == "goldPan")
-                removeTablePrompt:TogglePrompt(activePrompts.removeTable)
-
-                -- Mud Bucket
-                if stage == "mudBucket" and useMudBucketPrompt:HasCompleted() and activePrompts.mudBucket then
-                    TriggerServerEvent('bcc-goldpanning:useMudBucket')
-                    activePrompts.mudBucket = false
-                end
-                -- Water Bucket
-                if stage == "waterBucket" and useWaterBucketPrompt:HasCompleted() and activePrompts.waterBucket then
-                    TriggerServerEvent('bcc-goldpanning:useWaterBucket')
-                    activePrompts.waterBucket = false
-                end
-                -- Gold Pan
-                if stage == "goldPan" and useGoldPanPrompt:HasCompleted() and activePrompts.goldPan then
-                    TriggerServerEvent('bcc-goldpanning:usegoldPan')
-                    activePrompts.goldPan = false
-                end
-                -- Remove Table
-                if removeTablePrompt:HasCompleted() and activePrompts.removeTable then
-                    RemoveTable()
-                    activePrompts.removeTable = false
-                end
-            else
-                ResetActivePrompts()
             end
-        else
-            ResetActivePrompts()
-        end]]
     end
 end)
 
