@@ -44,6 +44,11 @@ Config.Minigame = {
     strict = true -- if true, letting the timer run out counts as a failed attempt
 }
 
+-- Metadata
+
+Config.ToolUsage = 2   ----- Remove Tool Usage Per Golsearch
+Config.UsageLeft = "Durability: "
+Config.needNewTool = "Goldpan Broken!"
 
 
 Config.waterTypes = { --https://github.com/femga/rdr3_discoveries/tree/master/zones
@@ -84,8 +89,3 @@ Config.waterTypes = { --https://github.com/femga/rdr3_discoveries/tree/master/zo
     {hash = "WATER_SOUTHFIELD_FLATS", type = "pond", label = "Southfield Flats"},
 
 }
-
-
-
-
-
