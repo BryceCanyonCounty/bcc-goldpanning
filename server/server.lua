@@ -112,6 +112,24 @@ AddEventHandler('bcc-goldpanning:usegoldPan', function()
     local itemCount = exports.vorp_inventory:getItemCount(_source, nil, Config.goldPan)
     if exports.vorp_inventory:canCarryItem(_source, Config.emptyWaterBucket, 1, nil) then
         if itemCount > 0 then
+            local toolUsage = Config.ToolUsage
+            local tool = exports.vorp_inventory:getItem(_source, Config.goldPan)
+            local toolMeta =  tool['metadata']
+        
+            if next(toolMeta) == nil then
+                exports.vorp_inventory:subItem(_source, Config.goldPan, 1, {})
+                exports.vorp_inventory:addItem(_source, Config.goldPan, 1, { description = Config.UsageLeft .. 100 - toolUsage, durability = 100 - toolUsage })
+            else
+                local durabilityValue = toolMeta.durability - toolUsage
+                exports.vorp_inventory:subItem(_source, Config.goldPan, 1, toolMeta)
+                if durabilityValue >= toolUsage then
+                    exports.vorp_inventory:subItem(_source, Config.goldPan, 1, toolMeta)
+                    exports.vorp_inventory:addItem(_source, Config.goldPan, 1, { description = Config.UsageLeft .. durabilityValue, durability = durabilityValue })
+                elseif durabilityValue < toolUsage then
+                    exports.vorp_inventory:subItem(_source, Config.goldPan, 1, toolMeta)
+                    VORPcore.NotifyRightTip(_source, _U('needNewTool'), 4000)
+                end
+            end
             TriggerClientEvent('bcc-goldpanning:goldPanUsedSuccess', _source)
             goldPanUse[_source] = true
             Citizen.CreateThread(function()
