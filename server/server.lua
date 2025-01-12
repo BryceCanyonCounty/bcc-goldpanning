@@ -9,9 +9,9 @@ exports.vorp_inventory:registerUsableItem(Config.emptyMudBucket, function(data) 
     exports.vorp_inventory:closeInventory(data.source)
 end)
 
-exports.vorp_inventory:registerUsableItem(Config.goldwashProp, function(data)   --The Gold Wash Table
-    TriggerClientEvent('bcc-goldpanning:placeProp', data.source, data.item.item)
-    exports.vorp_inventory:subItem(data.source, Config.goldwashProp, 1)
+exports.vorp_inventory:registerUsableItem(Config.goldwashProp, function(data)
+    TriggerClientEvent('bcc-goldpanning:placeProp', data.source, Config.goldwashProp)
+    exports.vorp_inventory:subItemById(data.source, data.item.id)
     exports.vorp_inventory:closeInventory(data.source)
 end)
 
